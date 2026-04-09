@@ -25,7 +25,7 @@ cd backend
 python -m venv venv
 source venv/bin/activate   # Windows: venv\Scripts\activate
 pip install -r requirements.txt
-python manage.py migrate
+python manage.py migrate # ModuleNotFoundError: No module named"movie"
 python manage.py sync_movies --genres
 python manage.py sync_movies --trending 2
 python manage.py runserver
