@@ -147,7 +147,7 @@ def search_movies(request):
     })
 
 
-@api_view(["POST"])
+@api_view(["GET"]) #Changed `@api_view(["POST"])` to `@api_view(["GET"])` in `movies/views.py` for the `trending_movies` endpoint, fixing a `405 Method Not Allowed` bug when fetching trending movies.
 @permission_classes([AllowAny])
 def trending_movies(request):
     window = request.query_params.get("window", "week")
