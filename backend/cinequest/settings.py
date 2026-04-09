@@ -26,7 +26,7 @@ INSTALLED_APPS = [
     "rest_framework_simplejwt",
     "corsheaders",
     "django_filters",
-    "movie.apps.MoviesConfig",
+    "movies.apps.MoviesConfig",    # In the cinequest/settings.py file the movies app was misspelled as 'movie' instead of 'movies', led to 500 internal server error. Preventing the python manage.py migrate migration
     "recommendations.apps.RecommendationsConfig",
     "users.apps.UsersConfig",
 ]
