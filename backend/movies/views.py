@@ -409,23 +409,4 @@ def compare_movies(request):
 
     return Response({"movies": movies})
 
-
-@api_view(["GET"])
-@permission_classes([AllowAny])
-def compare_two_movies(request):
-    id_string = request.query_params.get("ids", "")
-    movie_ids = [int(i.strip()) for i in id_string.split(",") if i.strip().isdigit()]
-
-    if len(movie_ids) < 2:
-        return Response({"error": "Provide at least 2 TMDB IDs: ?ids=550,680"}, status=400)
-
-    movie_list = []
-    for tid in movie_ids[:2]:
-        result = tmdb.get_movie_details(tid)
-        if result and "id" in result:
-            movie_list.append(result)
-
-    if len(movie_list) < 2:
-        return Response({"error": "Could not fetch both movies"}, status=404)
-
-    return Response({"movies": movie_list})
+### Removed duplicate and unused compare_two_movies endpoint to keep code clean and follow SOLID principles
