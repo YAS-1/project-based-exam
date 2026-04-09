@@ -122,7 +122,7 @@ class PersonViewSet(viewsets.ReadOnlyModelViewSet):
 
 ## standalone endpoints
 
-@api_view(["POST"])
+@api_view(["GET"]) #Changed `search_movies` endpoint method from POST to GET to fix 405 Method Not Allowed errors during search functionality.
 @permission_classes([AllowAny])
 def search_movies(request):
     query = request.query_params.get("q", "").strip()
