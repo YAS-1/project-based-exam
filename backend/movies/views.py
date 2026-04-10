@@ -1,7 +1,7 @@
 import logging
 from rest_framework import viewsets, status
 from rest_framework.decorators import action, api_view, permission_classes
-from rest_framework.permissions import AllowAny
+from rest_framework.permissions import AllowAny, IsAuthenticatedOrReadOnly
 from rest_framework.response import Response
 from django_filters.rest_framework import DjangoFilterBackend
 
@@ -24,6 +24,20 @@ class MovieViewSet(viewsets.ReadOnlyModelViewSet):
     filter_backends = [DjangoFilterBackend]
     filterset_fields = ["genres__slug"]
 
+
+    #Redesigned the `@action` regex transitioning to `@action(detail=False, url_path=r"(?P<tmdb_id>\d+)/reviews")`.
+    @action(detail=False, methods=["get", "post"], url_path=r"(?P<tmdb_id>\d+)/reviews", permission_classes=[IsAuthenticatedOrReadOnly])
+    def reviews(self, request, tmdb_id=None):
+        try:
+            movie = Movie.objects.get(tmdb_id=tmdb_id)
+        except Movie.DoesNotExist:
+            if request.method == "GET":
+                return Response({"results": []})
+            else:
+                movie = sync_service.sync_movie(tmdb_id)
+                if not movie:
+                    return Response({"error": "Movie not found"}, status=status.HTTP_404_NOT_FOUND)
+        
 
     @action(detail=True, methods=["get"])
     def recommendations(self, request, pk=None):
