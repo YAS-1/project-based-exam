@@ -24,10 +24,6 @@ class MovieViewSet(viewsets.ReadOnlyModelViewSet):
     filter_backends = [DjangoFilterBackend]
     filterset_fields = ["genres__slug"]
 
-    def get_serializer_class(self):
-        if self.action == "retrieve":
-            return MovieDetailSerializer
-        return MovieCompactSerializer
 
     @action(detail=True, methods=["get"])
     def recommendations(self, request, pk=None):
