@@ -54,3 +54,7 @@ export default function ReviewSection({ movieId }: ReviewSectionProps) {
       setSubmitting(false);
     }
   };
+  
+  if (loading) {
+    return <div className="animate-pulse h-32 bg-surface-2 rounded-xl mt-14" />;
+  }
