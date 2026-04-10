@@ -91,7 +91,7 @@ class RecommendationEngine:
                 with_genres=genre_id,
                 sort_by="vote_average.desc",
                 page=page,
-                **{"vote_count.gte": 100}
+                **{"vote_count.gte": 100} # Corrected the parameter spelling from vote_count_gte to the TMDB-compliant vote_count.gte
             )
             movies = data.get("results", [])
             for m in movies:
