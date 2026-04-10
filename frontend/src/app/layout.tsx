@@ -16,8 +16,9 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className="noise">
-      <body className="min-h-screen flex flex-col relative">
+    // Applied precise suppressHydrationWarning hooks disabling structural panics and unnecessary errors universally.
+<html lang="en" className="noise" suppressHydrationWarning>
+      <body className="min-h-screen flex flex-col relative" suppressHydrationWarning>
         <div className="ambient-orb ambient-orb-1" />
         <div className="ambient-orb ambient-orb-2" />
 

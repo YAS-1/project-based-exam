@@ -264,9 +264,7 @@ class WikipediaService:
     @staticmethod
     def get_movie_summary(title: str, year: Optional[int] = None) -> dict:
         """getting  Wikipedia summary for a movie."""
-        search_title = f"{title} (film)" if year else f"{title} (film)"
-        if year:
-            search_title = f"{title} ({year} film)"
+        search_title = f"{title} ({year} film)" if year else f"{title} (film)" # I structured the string variables handling the wikipedia fetch parameters that returns the summary of the movie
 
         cache_key = f"wiki:{search_title}"
         cached = cache.get(cache_key)
