@@ -137,3 +137,13 @@ class TMDBMovieSerializer(serializers.Serializer):
         rd = data.get("release_date", "")
         data["year"] = int(rd[:4]) if rd and len(rd) >= 4 else None
         return data
+# The review serialization
+# Benefit: This allows users to submit reviews and ratings for movies, which can be stored in the database and displayed on the frontend.
+# Benefit: Securely wires the backend allowing the front-end to POST/GET payload rating arrays.
+class ReviewSerializer(serializers.ModelSerializer):
+    username = serializers.CharField(source='user.username', read_only=True)
+
+    class Meta:
+        model = Review
+        fields = ['id', 'user', 'username', 'movie', 'rating', 'text', 'created_at']
+        read_only_fields = ['user', 'movie', 'created_at']

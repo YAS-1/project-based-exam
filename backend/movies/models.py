@@ -175,3 +175,19 @@ class WatchProvider(models.Model):
         if self.logo_path:
             return f"{settings.TMDB_IMAGE_BASE_URL}/w92{self.logo_path}"
         return None
+
+# User Reviews Database Architecture.
+# Ennables tracking and sorting of 5 star user reviews for movies.
+class Review(models.Model):
+    """User review and rating for a movie."""
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="reviews")
+    movie = models.ForeignKey(Movie, on_delete=models.CASCADE, related_name="reviews")
+    rating = models.IntegerField(default=5)
+    text = models.TextField(blank=True, default="")
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ["-created_at"]
+
+    def __str__(self):
+        return f"{self.user} review for {self.movie.title}"
