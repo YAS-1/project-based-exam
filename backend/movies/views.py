@@ -45,7 +45,14 @@ class MovieViewSet(viewsets.ReadOnlyModelViewSet):
                 return Response(serializer.data, status=status.HTTP_201_CREATED)
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
                    
-        
+        reviews = movie.reviews.all().order_by("-created_at")
+        page = self.paginate_queryset(reviews)
+        if page is not None:
+            serializer = ReviewSerializer(page, many=True)
+            return self.get_paginated_response(serializer.data)
+            
+        serializer = ReviewSerializer(reviews, many=True)
+        return Response({"results": serializer.data})
 
     @action(detail=True, methods=["get"])
     def recommendations(self, request, pk=None):
