@@ -90,7 +90,8 @@ export default function PersonalizedSection({ movies }: PersonalizedSectionProps
                       zIndex: i === 1 || i === 2 ? 2 : 1,
                     }}
                   >
-                    <div className="w-[110px] md:w-[130px] h-[165px] md:h-[195px] rounded-xl overflow-hidden shadow-2xl shadow-black/50 border border-white/[0.08] transition-all duration-400 group-hover/poster:scale-105 group-hover/poster:border-gold/20 group-hover/poster:shadow-gold/10">
+                    // There was an invalid CSS relative positioning causing an issue with the component rendering.
+                    <div className="relative w-[110px] md:w-[130px] h-[165px] md:h-[195px] rounded-xl overflow-hidden shadow-2xl shadow-black/50 border border-white/[0.08] transition-all duration-400 group-hover/poster:scale-105 group-hover/poster:border-gold/20 group-hover/poster:shadow-gold/10">
                       <Image
                         src={pUrl}
                         alt={movie.title}
