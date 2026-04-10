@@ -116,3 +116,14 @@ export interface WatchlistItem{
   watched: boolean;
   watched_at: string | null;
 }
+
+// review interface
+ export interface Review{
+  id: number;
+  user: number;
+  username: string;
+  movie: number;
+  rating: number;
+  text: string;
+  created_at: string;
+ }
