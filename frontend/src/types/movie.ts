@@ -105,3 +105,25 @@ export interface GenrePreference {
 }
 
 
+// watch list
+export interface WatchlistItem{
+  id: number;
+  movie_tmdb_id: number;
+  movie_title: string;
+  poster_path : string | null;
+  poster_url: string | null;
+  added_at : string;
+  watched: boolean;
+  watched_at: string | null;
+}
+
+// review interface
+ export interface Review{
+  id: number;
+  user: number;
+  username: string;
+  movie: number;
+  rating: number;
+  text: string;
+  created_at: string;
+ }
