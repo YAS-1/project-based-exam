@@ -113,7 +113,44 @@ export default function ReviewSection({ movieId }: ReviewSectionProps) {
           <p className="text-white/50 text-sm font-medium">Log in to interact and leave a review!</p>
         </div>
       )}
-      
+      <div className="space-y-4">
+        {reviews.length === 0 ? (
+          <p className="text-white/40 text-center py-8">No reviews yet. Be the first!</p>
+        ) : (
+          reviews.map((review) => (
+            <div key={review.id} className="glass-card rounded-xl p-5 border border-white/5">
+              <div className="flex items-center gap-3 mb-3">
+                <div className="w-10 h-10 rounded-full bg-surface-3 border border-white/10 flex items-center justify-center overflow-hidden">
+                  <User className="w-5 h-5 text-white/30" />
+                </div>
+                <div>
+                  <p className="font-semibold text-sm text-white/90">{review.username}</p>
+                  <p className="text-xs text-white/40">
+                    {new Date(review.created_at).toLocaleDateString(undefined, {
+                      year: 'numeric',
+                      month: 'long',
+                      day: 'numeric'
+                    })}
+                  </p>
+                </div>
+                <div className="ml-auto flex gap-1">
+                  {[1, 2, 3, 4, 5].map((star) => (
+                    <Star
+                      key={star}
+                      className={`w-3.5 h-3.5 ${
+                        star <= review.rating ? "text-gold fill-gold" : "text-white/20"
+                      }`}
+                    />
+                  ))}
+                </div>
+              </div>
+              <p className="text-white/70 text-sm leading-relaxed ml-[52px]">
+                {review.text}
+              </p>
+            </div>
+          ))
+        )}
+      </div>
     </section>
   );
 }
