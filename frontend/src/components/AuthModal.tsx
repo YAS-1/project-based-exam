@@ -36,6 +36,7 @@ export default function AuthModal({ open, onClose, initialMode = "login" }: Auth
           return;
         }
         await register(username, email, password);
+        await login(username, password);
       }
       onClose();
       setUsername("");
