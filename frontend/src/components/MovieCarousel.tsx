@@ -2,16 +2,11 @@
 
 import { useRef } from "react";
 import Link from "next/link";
-import { ChevronLeft, ChevronRight, ArrowRight, Star, Clock, Film } from "lucide-react";
+import { ChevronLeft, ChevronRight, ArrowRight } from "lucide-react";
 import MovieCard, { MovieCardSkeleton } from "@/components/MovieCard";
 import type { MovieCompact } from "@/types/movie";
 
-function formatMovieRuntime(minutes: number | null): string {
-  if (!minutes) return "";
-  const h = Math.floor(minutes / 60);
-  const m = minutes % 60;
-  return h > 0 ? `${h}h ${m}m` : `${m}m`;
-}
+
 
 interface MovieCarouselProps {
   title: string;
