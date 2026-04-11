@@ -6,7 +6,7 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('movies', '0002_alter_movie_title'),
+        ('movies', '0002_alter_title'),
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
     ]
 
