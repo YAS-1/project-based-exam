@@ -8,6 +8,7 @@ import type {
   User,
   GenrePreference,
   WatchlistItem,
+  Review,
 } from "@/types/movie";
 
 const API_BASE = process.env.NEXT_PUBLIC_API_URL || "http://127.0.0.1:8000/api";
@@ -148,6 +149,16 @@ export const moviesAPI = {
 
   getSimilar: (movieId: number) =>
     apiFetch<MovieCompact[]>(`/movies/list/${movieId}/similar/`),
+
+// Built explicit Typescript parameter extraction hooks targeting `getReviews()` & `submitReview()
+getReviews: (movieId: number) =>
+    apiFetch<PaginatedResponse<Review>>(`/movies/list/${movieId}/reviews/`),
+
+  submitReview: (movieId: number, rating: number, text: string) =>
+    apiFetch<Review>(`/movies/list/${movieId}/reviews/`, {
+      method: "POST",
+      body: JSON.stringify({ rating, text }),
+    }),
 
   getWikipedia: (movieId: number) =>
     apiFetch<{ summary: string; url: string }>(`/movies/list/${movieId}/wikipedia/`),
