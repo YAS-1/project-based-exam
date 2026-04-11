@@ -1,5 +1,7 @@
 from rest_framework import serializers
-from .models import Genre, Person, Movie, MovieCast, WatchProvider
+from .models import Genre, Person, Movie, MovieCast, WatchProvider, Review
+
+
 
 
 class GenreSerializer(serializers.ModelSerializer):
