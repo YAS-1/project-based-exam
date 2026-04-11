@@ -9,7 +9,7 @@ from .models import Movie, Genre, Person
 from .serializers import (
     MovieCompactSerializer, MovieDetailSerializer,
     GenreSerializer, PersonCompactSerializer, PersonDetailSerializer,
-    TMDBMovieSerializer,
+    TMDBMovieSerializer, ReviewSerializer,
 )
 from .services.tmdb_service import TMDBService, MovieSyncService, WikipediaService
 
@@ -37,14 +37,14 @@ class MovieViewSet(viewsets.ReadOnlyModelViewSet):
                 movie = sync_service.sync_movie(tmdb_id)
                 if not movie:
                     return Response({"error": "Movie not found"}, status=status.HTTP_404_NOT_FOUND)
-                
+        
         if request.method == "POST":
             serializer = ReviewSerializer(data=request.data)
             if serializer.is_valid():
                 serializer.save(user=request.user, movie=movie)
                 return Response(serializer.data, status=status.HTTP_201_CREATED)
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-                   
+            
         reviews = movie.reviews.all().order_by("-created_at")
         page = self.paginate_queryset(reviews)
         if page is not None:
