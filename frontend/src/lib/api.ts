@@ -149,6 +149,16 @@ export const moviesAPI = {
   getSimilar: (movieId: number) =>
     apiFetch<MovieCompact[]>(`/movies/list/${movieId}/similar/`),
 
+// Built explicit Typescript parameter extraction hooks targeting `getReviews()` & `submitReview()
+getReviews: (movieId: number) =>
+    apiFetch<PaginatedResponse<Review>>(`/movies/list/${movieId}/reviews/`),
+
+  submitReview: (movieId: number, rating: number, text: string) =>
+    apiFetch<Review>(`/movies/list/${movieId}/reviews/`, {
+      method: "POST",
+      body: JSON.stringify({ rating, text }),
+    }),
+
   getWikipedia: (movieId: number) =>
     apiFetch<{ summary: string; url: string }>(`/movies/list/${movieId}/wikipedia/`),
 
