@@ -66,6 +66,7 @@ class WatchlistViewSet(viewsets.ModelViewSet):
     """User's watchlist CRUD."""
     serializer_class = WatchlistSerializer
     permission_classes = [IsAuthenticated]
+    lookup_field = "movie_tmdb_id" # Delete a movie from watchlist using its tmdb id
 
     def get_queryset(self):
         return Watchlist.objects.filter(user=self.request.user)
