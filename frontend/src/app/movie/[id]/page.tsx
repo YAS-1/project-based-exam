@@ -684,6 +684,9 @@ export default function MovieDetailPage() {
             </div>
           </section>
         )}
+
+        {/* User Reviews */}
+        <ReviewSection movieId={tmdbId} />
       </div>
 
       {/* Trailer modal*/}
