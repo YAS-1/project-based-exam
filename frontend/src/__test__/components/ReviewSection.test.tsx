@@ -12,11 +12,12 @@ jest.mock('@/lib/AuthContext', () => ({
 // Mock API calls
 jest.mock('@/lib/api', () => ({
   moviesAPI: {
-    getReviews: jest.fn(),
-    submitReview: jest.fn(),
+    getReviews: jest.fn(), // Mocked to return a sample review
+    submitReview: jest.fn(), // Mocked to simulate successful review submission
   },
 }))
 
+// Mock next/navigation
 describe('ReviewSection Component', () => {
   beforeEach(() => {
     (moviesAPI.getReviews as jest.Mock).mockResolvedValue({
@@ -36,6 +37,7 @@ describe('ReviewSection Component', () => {
     jest.clearAllMocks()
   })
 
+  // Test cases for rendering reviews and the review form
   it('renders reviews correctly after loading', async () => {
     render(<ReviewSection movieId={550} />)
 
@@ -50,7 +52,7 @@ describe('ReviewSection Component', () => {
     render(<ReviewSection movieId={550} />)
 
     await waitFor(() => {
-      expect(screen.getByPlaceholderText(/Share your thoughts about this movie.../i)).toBeInTheDocument()
+      expect(screen.getByPlaceholderText(/Share your thoughts about this movie.../i)).toBeInTheDocument() // Check for the rating select
       expect(screen.getByText('Post Review')).toBeInTheDocument()
     })
   })
