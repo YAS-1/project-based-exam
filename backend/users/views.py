@@ -28,3 +28,18 @@ def profile(request):
         serializer.save()
         return Response(serializer.data)
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+# API for searching users to share watchlists with
+@api_view(["GET"])
+@permission_classes([IsAuthenticated])
+def search_users(request):
+    """GET /api/users/search/?q=<username_prefix>"""
+    from django.contrib.auth import get_user_model
+    User = get_user_model()
+    query = request.query_params.get("q", "").strip()
+    if not query:
+        return Response([])
+
+    users = User.objects.filter(username__icontains=query).exclude(id=request.user.id)[:10]
+    serializer = UserSerializer(users, many=True)
+    return Response(serializer.data)
