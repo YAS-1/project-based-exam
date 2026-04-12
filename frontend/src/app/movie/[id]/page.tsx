@@ -148,8 +148,17 @@ export default function MovieDetailPage() {
       setIsLiked(true);
       setIsDisliked(false);
       setLikeCount((c) => c + 1);
+
+      if (isAuthenticated) {
+        recommendationsAPI.trackInteraction({
+          movie_tmdb_id: tmdbId,
+          movie_title: movie?.title || "",
+          interaction_type: "like",
+          genre_ids: (movie?.genres || []).map((g: any) => g.id),
+        }).catch(console.error);
+      }
     }
-  }, [tmdbId, isLiked, movie]);
+  }, [tmdbId, isLiked, movie, isAuthenticated]);
 
   const handleDislike = useCallback(() => {
     const liked = getLikedMovies();
@@ -170,8 +179,17 @@ export default function MovieDetailPage() {
       saveLikedMovies(filtered);
       setIsDisliked(true);
       setIsLiked(false);
+
+      if (isAuthenticated) {
+        recommendationsAPI.trackInteraction({
+          movie_tmdb_id: tmdbId,
+          movie_title: movie?.title || "",
+          interaction_type: "dislike",
+          genre_ids: (movie?.genres || []).map((g: any) => g.id),
+        }).catch(console.error);
+      }
     }
-  }, [tmdbId, isDisliked, movie]);
+  }, [tmdbId, isDisliked, movie, isAuthenticated]);
 
   const handleBookmark = useCallback(() => {
     const watchlist = getWatchlist();
@@ -179,6 +197,11 @@ export default function MovieDetailPage() {
     if (isBookmarked) {
       saveWatchlist(watchlist.filter((m: any) => m.id !== tmdbId));
       setIsBookmarked(false);
+
+      // Allows user to remove from watchlist when logged in
+      if (isAuthenticated) {
+        recommendationsAPI.removeFromWatchlist(tmdbId).catch(console.error);
+      }
     } else {
       watchlist.push({
         id: tmdbId,
@@ -188,8 +211,24 @@ export default function MovieDetailPage() {
       });
       saveWatchlist(watchlist);
       setIsBookmarked(true);
+
+      // Allows user to add to watchlist when logged in
+      if (isAuthenticated) {
+        recommendationsAPI.addToWatchlist({
+          movie_tmdb_id: tmdbId,
+          movie_title: movie?.title || "",
+          poster_path: movie?.poster_path || "",
+        }).catch(console.error);
+        
+        recommendationsAPI.trackInteraction({
+          movie_tmdb_id: tmdbId,
+          movie_title: movie?.title || "",
+          interaction_type: "watchlist",
+          genre_ids: (movie?.genres || []).map((g: any) => g.id),
+        }).catch(console.error);
+      }
     }
-  }, [tmdbId, isBookmarked, movie]);
+  }, [tmdbId, isBookmarked, movie, isAuthenticated]);
 
   // Loading state
   if (loading) {
@@ -197,7 +236,7 @@ export default function MovieDetailPage() {
       <div className="pt-24 pb-20">
         <div className="h-[60vh] skeleton" />
         
-        //
+        
         <div className="max-w-6xl mx-auto px-6 md:px-10 -mt-40 relative z-10 space-y-6">
           <div className="skeleton h-10 w-2/3 rounded-lg" />
           <div className="skeleton h-6 w-1/3 rounded-lg" />
@@ -645,6 +684,9 @@ export default function MovieDetailPage() {
             </div>
           </section>
         )}
+
+        {/* User Reviews */}
+        <ReviewSection movieId={tmdbId} />
       </div>
 
       {/* Trailer modal*/}
