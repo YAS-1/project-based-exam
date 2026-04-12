@@ -77,3 +77,28 @@ class Watchlist(models.Model):
     def __str__(self):
         status = "watched" if self.watched else "pending"
         return f"{self.user.username}: {self.movie_title} ({status})"
+
+
+# Model for sharing watchlists
+class SharedWatchlist(models.Model):
+    """Tracks which users have shared their watchlist with others."""
+    owner = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        related_name="shared_watchlists_owned",
+        help_text="The user sharing their watchlist"
+    )
+    shared_with = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        related_name="shared_watchlists_received",
+        help_text="The user receiving access to the watchlist"
+    )
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        unique_together = ["owner", "shared_with"]
+        ordering = ["-created_at"]
+
+    def __str__(self):
+        return f"{self.owner.username} shared with {self.shared_with.username}"

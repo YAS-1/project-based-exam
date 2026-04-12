@@ -11,5 +11,8 @@ urlpatterns = [
     path("preferences/", views.genre_preferences, name="genre-preferences"),
     path("track/", views.track_interaction, name="track-interaction"),
     path("dashboard/", views.dashboard_stats, name="dashboard-stats"),
+    path("shared-watchlists/share/", views.share_watchlist, name="share-watchlist"),
+    path("shared-watchlists/", views.shared_watchlists_list, name="shared-watchlists-list"),
+    path("shared-watchlists/<int:owner_id>/", views.shared_watchlist_detail, name="shared-watchlist-detail"),
     path("", include(router.urls)),
 ]
