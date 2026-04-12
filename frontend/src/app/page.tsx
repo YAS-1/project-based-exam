@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { TrendingUp, Star, Clapperboard, Flame, Crown } from "lucide-react";
+import { Star, Clapperboard, Flame, Crown } from "lucide-react";
 import MovieCarousel from "@/components/MovieCarousel";
 import GenreGrid from "@/components/GenreGrid";
 import HeroSection from "@/components/HeroSection";
