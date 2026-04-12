@@ -197,6 +197,11 @@ export default function MovieDetailPage() {
     if (isBookmarked) {
       saveWatchlist(watchlist.filter((m: any) => m.id !== tmdbId));
       setIsBookmarked(false);
+
+      // Allows user to remove from watchlist when logged in
+      if (isAuthenticated) {
+        recommendationsAPI.removeFromWatchlist(tmdbId).catch(console.error);
+      }
     } else {
       watchlist.push({
         id: tmdbId,
