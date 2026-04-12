@@ -151,7 +151,7 @@ export const moviesAPI = {
     apiFetch<MovieCompact[]>(`/movies/list/${movieId}/similar/`),
 
 // Built explicit Typescript parameter extraction hooks targeting `getReviews()` & `submitReview()
-getReviews: (movieId: number) =>
+  getReviews: (movieId: number) =>
     apiFetch<PaginatedResponse<Review>>(`/movies/list/${movieId}/reviews/`),
 
   submitReview: (movieId: number, rating: number, text: string) =>
@@ -247,4 +247,23 @@ export const recommendationsAPI = {
     apiFetch(`/recommendations/watchlist/${id}/`, { method: "DELETE" }),
 
   getDashboard: () => apiFetch<any>("/recommendations/dashboard/"),
+
+  // Movie Share API added to the frontend
+  shareWatchlist: (userId: number) =>
+    apiFetch("/recommendations/shared-watchlists/share/", {
+      method: "POST",
+      body: JSON.stringify({ user_id: userId }),
+    }),
+
+  getSharedWatchlists: () =>
+    apiFetch<any[]>("/recommendations/shared-watchlists/"),
+
+  getSharedWatchlistMovies: (ownerId: number) =>
+    apiFetch<WatchlistItem[]>(`/recommendations/shared-watchlists/${ownerId}/`),
+};
+
+// Users API
+export const usersAPI = {
+  searchUsers: (query: string) =>
+    apiFetch<User[]>(`/users/search/?q=${encodeURIComponent(query)}`),
 };

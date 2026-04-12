@@ -4,7 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import {
   Search, Menu, X, Film, Compass, Star, Clapperboard,
-  Sparkles, BarChart3, User, LogOut, LogIn, ArrowLeftRight,
+  Sparkles, BarChart3, User, LogOut, LogIn, ArrowLeftRight, Users
 } from "lucide-react";
 import SearchModal from "@/components/SearchModal";
 import AuthModal from "@/components/AuthModal";
@@ -58,6 +58,7 @@ export default function Navbar() {
                 </Link>
               ))}
               {isAuthenticated && (
+                <>
                 <Link
                   href="/dashboard"
                   className="flex items-center gap-2 px-4 py-2 rounded-lg text-sm text-white/50 hover:text-white hover:bg-white/5 transition-all duration-200"
@@ -65,6 +66,14 @@ export default function Navbar() {
                   <BarChart3 className="w-3.5 h-3.5" />
                   Dashboard
                 </Link>
+                  <Link
+                    href="/movie-share"
+                    className="flex items-center gap-2 px-4 py-2 rounded-lg text-sm text-white/50 hover:text-white hover:bg-white/5 transition-all duration-200"
+                  >
+                    <Users className="w-3.5 h-3.5" />
+                    Movie Share
+                  </Link>
+                </>
               )}
             </div>
 
@@ -157,6 +166,7 @@ export default function Navbar() {
               </Link>
             ))}
             {isAuthenticated && (
+              <>
               <Link
                 href="/dashboard"
                 className="block text-sm text-white/50 hover:text-white py-2.5 px-3 rounded-lg hover:bg-white/5"
@@ -164,6 +174,14 @@ export default function Navbar() {
               >
                 Dashboard
               </Link>
+                <Link
+                  href="/movie-share"
+                  className="block text-sm text-white/50 hover:text-white py-2.5 px-3 rounded-lg hover:bg-white/5"
+                  onClick={() => setMenuOpen(false)}
+                >
+                  Movie Share
+                </Link>
+              </>
             )}
           </div>
         )}
