@@ -173,3 +173,63 @@ def dashboard_stats(request):
         "activity_timeline": activity_timeline,
         "recent_activity": recent_data,
     })
+
+
+@api_view(["POST"])
+@permission_classes([IsAuthenticated])
+def share_watchlist(request):
+    """POST /api/recommendations/shared-watchlists/share/"""
+    from .models import SharedWatchlist
+    from django.contrib.auth import get_user_model
+    User = get_user_model()
+    
+    shared_with_id = request.data.get("user_id")
+    if not shared_with_id:
+        return Response({"error": "user_id is required"}, status=status.HTTP_400_BAD_REQUEST)
+        
+    try:
+        shared_with_user = User.objects.get(id=shared_with_id)
+    except User.DoesNotExist:
+        return Response({"error": "User not found"}, status=status.HTTP_404_NOT_FOUND)
+        
+    if request.user.id == shared_with_id:
+        return Response({"error": "Cannot share with yourself"}, status=status.HTTP_400_BAD_REQUEST)
+        
+    shared, created = SharedWatchlist.objects.get_or_create(
+        owner=request.user,
+        shared_with=shared_with_user
+    )
+    
+    from .serializers import SharedWatchlistSerializer
+    return Response(SharedWatchlistSerializer(shared).data, status=status.HTTP_201_CREATED if created else status.HTTP_200_OK)
+
+
+# Get watchlists that were shared with the requesting user
+@api_view(["GET"])
+@permission_classes([IsAuthenticated])
+def shared_watchlists_list(request):
+    """GET /api/recommendations/shared-watchlists/"""
+    from .models import SharedWatchlist
+    from .serializers import SharedWatchlistSerializer
+    # Get watchlists that were shared with the requesting user
+    shared_with_me = SharedWatchlist.objects.filter(shared_with=request.user)
+    serializer = SharedWatchlistSerializer(shared_with_me, many=True)
+    return Response(serializer.data)
+
+
+@api_view(["GET"])
+@permission_classes([IsAuthenticated])
+def shared_watchlist_detail(request, owner_id):
+    """GET /api/recommendations/shared-watchlists/<owner_id>/"""
+    from .models import SharedWatchlist
+    from .serializers import WatchlistSerializer
+    
+    # Verify the owner actually shared it with the requesting user
+    try:
+        SharedWatchlist.objects.get(owner_id=owner_id, shared_with=request.user)
+    except SharedWatchlist.DoesNotExist:
+        return Response({"error": "Watchlist not shared with you"}, status=status.HTTP_403_FORBIDDEN)
+        
+    watchlist_items = Watchlist.objects.filter(user_id=owner_id).order_by("-added_at")
+    serializer = WatchlistSerializer(watchlist_items, many=True)
+    return Response(serializer.data)
