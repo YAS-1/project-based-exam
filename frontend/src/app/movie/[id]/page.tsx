@@ -179,8 +179,17 @@ export default function MovieDetailPage() {
       saveLikedMovies(filtered);
       setIsDisliked(true);
       setIsLiked(false);
+
+      if (isAuthenticated) {
+        recommendationsAPI.trackInteraction({
+          movie_tmdb_id: tmdbId,
+          movie_title: movie?.title || "",
+          interaction_type: "dislike",
+          genre_ids: (movie?.genres || []).map((g: any) => g.id),
+        }).catch(console.error);
+      }
     }
-  }, [tmdbId, isDisliked, movie]);
+  }, [tmdbId, isDisliked, movie, isAuthenticated]);
 
   const handleBookmark = useCallback(() => {
     const watchlist = getWatchlist();
