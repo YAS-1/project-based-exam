@@ -95,6 +95,10 @@
 - **The Issue & Cause:** Users were clicking on movies to view them, but their personal dashboard engagement analytics still read generic zero interactions. The error was caused because local storage tracked the data accurately, but failed to synchronize and push that data back up to the server.
 - **The Fix:** We fixed the mapping structure by deploying an asynchronous `trackInteraction()` tool. Now, every single time a movie gets viewed, the frontend natively pushes those metric updates instantly back to the backend servers to reflect accurately.
 
+### 4. Signup Confirm Password Mismatch (Bug)
+- **Domain & Location:** Frontend - `frontend/src/components/AuthModal.tsx`, `frontend/src/lib/AuthContext.tsx`, `frontend/src/lib/api.ts`
+- **The Issue & Cause:** During signup, the user interface only asked for username, email, and password, while the backend registration validation requires a separate `password_confirm` field. This created a frontend-backend validation mismatch and prevented proper user-side confirmation of password accuracy.
+- **The Fix:** We fixed this by adding a dedicated confirm-password input on the signup form, validating that both password fields match before submission, and wiring the frontend registration flow to explicitly send `password_confirm` to the backend endpoint.
 ## Member 6 (Ivan)
 
 ### 1. Missing Dictionary Parameters (Bug)
