@@ -17,7 +17,7 @@ logger = logging.getLogger(__name__)
 tmdb = TMDBService()
 sync_service = MovieSyncService()
 
-## Movie ViewSet
+## Movie ViewSets
 class MovieViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = Movie.objects.prefetch_related("genres", "directors").all()
     permission_classes = [AllowAny]
@@ -84,7 +84,7 @@ class MovieViewSet(viewsets.ReadOnlyModelViewSet):
         return Response(wiki_data)
 
 
-## Genre ViewSet
+## Genre ViewSets
 class GenreViewSet(viewsets.ReadOnlyModelViewSet):
     """Genres API."""
     queryset = Genre.objects.all()
@@ -99,7 +99,7 @@ class GenreViewSet(viewsets.ReadOnlyModelViewSet):
         page = int(request.query_params.get("page", 1))
         sort = request.query_params.get("sort", "popularity.desc")
 
-        # Try local DB first
+        # Try local Database first
         local_movies = Movie.objects.filter(genres=genre).order_by("-popularity")
         if local_movies.count() >= 20:
             paginator = self.paginate_queryset(local_movies)
@@ -118,7 +118,7 @@ class GenreViewSet(viewsets.ReadOnlyModelViewSet):
         })
 
 
-## Person ViewSet
+## Person ViewSets
 
 class PersonViewSet(viewsets.ReadOnlyModelViewSet):
     """People (directors, actors) API."""
@@ -412,7 +412,7 @@ def discover_filtered(request):
     })
 
 
-## movie comparison
+## movie comparisons
 
 @api_view(["GET"])
 @permission_classes([AllowAny])
