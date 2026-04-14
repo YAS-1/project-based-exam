@@ -20,6 +20,7 @@ sync_service = MovieSyncService()
 ## Movie ViewSet
 class MovieViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = Movie.objects.prefetch_related("genres", "directors").all()
+    serializer_class = MovieCompactSerializer
     permission_classes = [AllowAny]
     filter_backends = [DjangoFilterBackend]
     filterset_fields = ["genres__slug"]
