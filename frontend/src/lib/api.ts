@@ -82,6 +82,7 @@ async function apiFetch<T>(
         headers,
       });
       if (!retryRes.ok) throw new Error(`API error: ${retryRes.status}`);
+      if (retryRes.status === 204) return undefined as T;
       return retryRes.json();
     } else {
       clearTokens();
@@ -93,6 +94,7 @@ async function apiFetch<T>(
     throw new Error(`API error: ${response.status}`);
   }
 
+  if (response.status === 204) return undefined as T;
   return response.json();
 }
 
