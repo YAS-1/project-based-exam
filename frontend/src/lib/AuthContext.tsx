@@ -9,7 +9,12 @@ interface AuthContextType {
   loading: boolean;
   isAuthenticated: boolean;
   login: (username: string, password: string) => Promise<void>;
-  register: (username: string, email: string, password: string) => Promise<void>;
+  register: (
+    username: string,
+    email: string,
+    password: string,
+    passwordConfirm: string
+  ) => Promise<void>;
   logout: () => void;
   refreshUser: () => Promise<void>;
 }
@@ -52,11 +57,19 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     await refreshUser();
   }, [refreshUser]);
 
-  const register = useCallback(async (username: string, email: string, password: string) => {
-    await authAPI.register(username, email, password);
-    await authAPI.login(username, password);
-    await refreshUser();
-  }, [refreshUser]);
+  const register = useCallback(
+    async (
+      username: string,
+      email: string,
+      password: string,
+      passwordConfirm: string
+    ) => {
+      await authAPI.register(username, email, password, passwordConfirm);
+      await authAPI.login(username, password);
+      await refreshUser();
+    },
+    [refreshUser]
+  );
 
   const logout = useCallback(() => {
     clearTokens();
