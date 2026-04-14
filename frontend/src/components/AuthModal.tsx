@@ -16,6 +16,7 @@ export default function AuthModal({ open, onClose, initialMode = "login" }: Auth
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
@@ -35,13 +36,19 @@ export default function AuthModal({ open, onClose, initialMode = "login" }: Auth
           setLoading(false);
           return;
         }
-        await register(username, email, password);
+        if (password !== confirmPassword) {
+          setError("Passwords do not match");
+          setLoading(false);
+          return;
+        }
+        await register(username, email, password, confirmPassword);
         await login(username, password);
       }
       onClose();
       setUsername("");
       setEmail("");
       setPassword("");
+      setConfirmPassword("");
     } catch (err: any) {
       setError(
         mode === "login"
@@ -140,6 +147,23 @@ export default function AuthModal({ open, onClose, initialMode = "login" }: Auth
                 placeholder={mode === "register" ? "Min 8 characters" : "Your password"}
               />
             </div>
+
+            {mode === "register" && (
+              <div className="animate-fade-in">
+                <label className="text-[11px] uppercase tracking-wider text-white/30 font-semibold mb-1.5 block">
+                  Confirm Password
+                </label>
+                <input
+                  type="password"
+                  value={confirmPassword}
+                  onChange={(e) => setConfirmPassword(e.target.value)}
+                  required
+                  minLength={8}
+                  className="w-full h-12 px-4 rounded-xl bg-surface-2 border border-white/[0.08] text-white placeholder:text-white/20 outline-none focus:border-gold/40 focus:ring-1 focus:ring-gold/20 transition-all font-body"
+                  placeholder="Re-enter password"
+                />
+              </div>
+            )}
 
             <button
               type="submit"

@@ -108,10 +108,20 @@ export const authAPI = {
     return tokens;
   },
 
-  register: async (username: string, email: string, password: string) => {
+  register: async (
+    username: string,
+    email: string,
+    password: string,
+    passwordConfirm: string
+  ) => {
     return apiFetch<User>("/users/register/", {
       method: "POST",
-      body: JSON.stringify({ username, email, password, password_confirm: password }),
+      body: JSON.stringify({
+        username,
+        email,
+        password,
+        password_confirm: passwordConfirm,
+      }),
     });
   },
 
