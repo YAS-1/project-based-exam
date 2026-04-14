@@ -6,27 +6,27 @@ This document outlines the specific backend endpoints and frontend URLs selected
 
 We will use Postman to test the following critical backend endpoints to ensure data integrity, authentication mechanisms, and API contract adherence:
 
-1. **Login Endpoint**
+1. **Login Endpoint: Confirms authentication endpoint behavior for valid/invalid credentials.**
    - **Method:** `POST`
    - **URL:** `/api/auth/token/`
    - **Reason for Testing:** Validates the authentication mechanism, ensuring that registered users can successfully obtain JWT tokens for secure access to the platform.
 
-2. **Sign Up Endpoint**
+2. **Sign Up Endpoint: Confirms API contract + user model creation/validation.**
    - **Method:** `POST`
    - **URL:** `/api/users/register/`
    - **Reason for Testing:** Verifies the user registration flow, including password validation and successful user creation in the database.
 
-3. **Reviews Endpoint**
+3. **Reviews Endpoint: Confirms review model creation (authenticated) and relation to movie/user.**
    - **Method:** `GET` & `POST`
    - **URL:** `/api/movies/list/<tmdb_id>/reviews/` 
    - **Reason for Testing:** This endpoint handles both fetching existing reviews and submitting new ones. Testing this ensures that authenticated users can successfully post reviews tied to specific movies, and that the data is correctly retrieved.
 
-4. **Database Returning Movies Endpoint (Movie List)**
+4. **Database Returning Movies Endpoint (Movie List): Explicit data synchronization test: TMDB -> local DB persistence path.**
    - **Method:** `GET`
    - **URL:** `/api/movies/list/` (and related endpoints like `/api/movies/search/`)
    - **Reason for Testing:** Confirms that the backend correctly retrieves and serves movie data. This is critical for rendering the movie lists efficiently when data already exists locally or needs to be fetched.
 
-5. **Dashboard Stats Endpoint**
+5. **Dashboard Stats Endpoint: Confirms aggregation/model logic over interactions/watchlist/preferences.**
    - **Method:** `GET`
    - **URL:** `/api/recommendations/dashboard/`
    - **Reason for Testing:** This endpoint aggregates data on a user's movie interactions (e.g., liked, disliked, watchlist counts). Testing this ensures that the backend successfully packages this user-specific data to be consumed by the frontend dashboard.
